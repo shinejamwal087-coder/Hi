@@ -1,22 +1,16 @@
-"""Local SQLite storage layer for the Daily Utility App MVP.
-
-This module keeps all database-specific logic in one place so the rest of the
-app can stay clean and easier to expand in later phases.
-"""
+"""Local SQLite storage layer for the Daily Utility App MVP."""
 
 from __future__ import annotations
 
 import sqlite3
 from pathlib import Path
-from typing import List, Dict
+from typing import Dict, List
 
 
 class Database:
     """Simple SQLite helper class for notes and reminders."""
 
     def __init__(self, db_path: str = "daily_utility.db") -> None:
-        # Store DB in app folder by default. In Android packaging this path can
-        # be replaced with an app-specific writable directory later.
         self.db_path = Path(db_path)
         self._init_db()
 
@@ -26,7 +20,7 @@ class Database:
         return conn
 
     def _init_db(self) -> None:
-        """Create required tables if they do not exist yet."""
+        """Create app tables if missing."""
         with self._connect() as conn:
             conn.execute(
                 """
@@ -44,24 +38,10 @@ class Database:
                     title TEXT NOT NULL,
                     category TEXT NOT NULL,
                     time TEXT NOT NULL,
-                    repeat TEXT NOT NULL,
+                    repeat_type TEXT NOT NULL,
                     status TEXT NOT NULL DEFAULT 'active'
                 )
                 """
-            )
-            self._migrate_repeat_type_column(conn)
-
-    def _migrate_repeat_type_column(self, conn: sqlite3.Connection) -> None:
-        """Handle old schema (`repeat_type`) so existing users keep their data."""
-        columns = {
-            row[1] for row in conn.execute("PRAGMA table_info(reminders)").fetchall()
-        }
-        if "repeat" in columns:
-            return
-        if "repeat_type" in columns:
-            conn.execute("ALTER TABLE reminders ADD COLUMN repeat TEXT DEFAULT 'Once'")
-            conn.execute(
-                "UPDATE reminders SET repeat = COALESCE(NULLIF(repeat_type, ''), 'Once')"
             )
 
     # ---------- Notes ----------
@@ -84,21 +64,21 @@ class Database:
             conn.execute("DELETE FROM notes WHERE id = ?", (note_id,))
 
     # ---------- Reminders ----------
-    def add_reminder(self, title: str, category: str, time_value: str, repeat_value: str) -> None:
+    def add_reminder(self, title: str, category: str, time_value: str, repeat_type: str) -> None:
         with self._connect() as conn:
             conn.execute(
                 """
-                INSERT INTO reminders (title, category, time, repeat, status)
+                INSERT INTO reminders (title, category, time, repeat_type, status)
                 VALUES (?, ?, ?, ?, 'active')
                 """,
-                (title.strip(), category, time_value.strip(), repeat_value),
+                (title.strip(), category, time_value.strip(), repeat_type),
             )
 
     def get_reminders(self) -> List[Dict]:
         with self._connect() as conn:
             rows = conn.execute(
                 """
-                SELECT id, title, category, time, repeat, status
+                SELECT id, title, category, time, repeat_type, status
                 FROM reminders
                 ORDER BY id DESC
                 """
