@@ -174,7 +174,7 @@ class RemindersScreen(Screen):
             title=self.title_input.text,
             category=self.category_spinner.text,
             time_value=self.time_input.text,
-            repeat_type=self.repeat_spinner.text,
+            repeat_value=self.repeat_spinner.text,
         )
         if ok:
             self.title_input.text = ""
@@ -209,7 +209,7 @@ class RemindersScreen(Screen):
             )
             row.add_widget(
                 Label(
-                    text=f"{reminder['category']} | {reminder['time']} | {reminder['repeat_type']}",
+                    text=f"{reminder['category']} | {reminder['time']} | {reminder['repeat']}",
                     size_hint_y=None,
                     height=28,
                     halign="left",
