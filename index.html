@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily Utility App — Preview</title>
+    <meta
+      name="description"
+      content="Daily Utility App preview page for GitHub. Android-first Kivy app with Notes and Reminders MVP."
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <p class="badge">Phase 1 MVP</p>
+      <h1>Daily Utility App</h1>
+      <p class="subtitle">
+        A lightweight Android-first app built with <strong>Python + Kivy</strong>
+        for daily notes and reminders.
+      </p>
+      <div class="cta-row">
+        <a class="btn primary" href="#features">See Features</a>
+        <a class="btn" href="#run">How to Run</a>
+      </div>
+    </header>
+
+    <main>
+      <section id="features" class="card">
+        <h2>Current Features (Phase 1)</h2>
+        <ul>
+          <li>Notes: add, view, delete</li>
+          <li>Reminders: add, view, delete</li>
+          <li>Reminder categories: Study, Workout, Tasks</li>
+          <li>Repeat options: Once, Daily, Weekly</li>
+          <li>Local SQLite storage (offline)</li>
+          <li>Bottom navigation UI (Home / Notes / Reminders / Assistant)</li>
+        </ul>
+      </section>
+
+      <section id="run" class="card">
+        <h2>How to Run the App</h2>
+        <p>
+          This repository hosts source code. The mobile app itself runs locally in
+          Pydroid 3 / Termux or as an APK built with Buildozer.
+        </p>
+        <ol>
+          <li>Install Kivy in your runtime environment.</li>
+          <li>Run <code>python main.py</code> for local testing.</li>
+          <li>Or build APK with <code>buildozer android debug</code>.</li>
+        </ol>
+      </section>
+
+      <section class="card">
+        <h2>Roadmap (Next Phases)</h2>
+        <ul>
+          <li>Dashboard with progress insights</li>
+          <li>Voice assistant commands</li>
+          <li>Motivation and goals tracking</li>
+          <li>Focus mode and night review</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <p>Built for Android • Lightweight • Beginner-friendly architecture</p>
+    </footer>
+  </body>
+</html>
